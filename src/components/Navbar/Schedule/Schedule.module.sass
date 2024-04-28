@@ -1,0 +1,43 @@
+$color-white: rgba(255, 255, 255, 1)
+$color-block: rgba(43, 59, 72, 1)
+$color-blue: rgba(77, 158, 254, 1)
+
+    
+.schedule
+    grid-area: schedule
+    
+    &__time
+        display: flex
+        justify-content: center
+        align-items: center
+        background: $color-blue
+        font-size: 1.5rem
+        font-weight: 500
+        width: 9.1rem
+        height: 2.3rem
+        margin: 0 auto .5rem
+        border-radius: .5rem
+
+    &__lesson
+        text-align: center
+        font-size: 2rem
+        font-weight: 300
+
+.scheduleItem
+    margin-bottom: 0.47rem
+    padding: 1.5rem 1rem
+    background: $color-block
+    color: $color-white
+    border-radius: 1rem 
+    &:last-child
+         margin-bottom: 0
+
+.noSchedule
+    display: flex
+    justify-content: center
+    padding: 1.5rem 1rem
+    background: $color-block
+    color: $color-white
+    border-radius: 1rem 
+    font-size: 2rem
+    font-weight: 300

@@ -1,0 +1,26 @@
+$color-white: rgba(255, 255, 255, 1)
+$color-block: rgba(43, 59, 72, 1)
+    
+@mixin fraction-text
+    font-weight: 300
+    font-size: 1.8rem
+    line-height: 2.194rem
+    color: $color-white
+
+.numerator
+    grid-area: numerator
+    padding: 0
+    background: $color-block
+    border-radius: 0 0 0 1rem
+    border: none
+    cursor: pointer
+    @include fraction-text
+
+.denominator 
+    grid-area: denominator  
+    padding: 0
+    background: $color-block
+    border-radius: 0 0 1rem 0
+    border: none
+    cursor: pointer
+    @include fraction-text
