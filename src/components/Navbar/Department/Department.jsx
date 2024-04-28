@@ -1,5 +1,5 @@
 import styles from "./Department.module.sass";
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 const Department = (props) => {
   const [selectedDepartment, setSelectedDepartment] = useState("фвт");
