@@ -29,30 +29,48 @@ const Days = (props) => {
 
   return (
     <>
-      <button onClick={handleMonday} className={styles.day + " " + styles.Mon}>
+      <button onClick={handleMonday} className={
+        dayOfTheWeek === "monday" 
+        ? styles.day + " " + styles.Mon + " " + styles.active 
+        : styles.day + " " + styles.Mon}>
         Пн
       </button>
-      <button onClick={handleTuesday} className={styles.day + " " + styles.Tue}>
+      <button onClick={handleTuesday} className={
+        dayOfTheWeek === "tuesday"
+        ? styles.day + " " + styles.Tue + " " + styles.active
+        : styles.day + " " + styles.Tue}>
         Вт
       </button>
       <button
         onClick={handleWednesday}
-        className={styles.day + " " + styles.Wed}
+        className={
+        dayOfTheWeek === "wednesday"
+        ? styles.day + " " + styles.Wed + " " + styles.active  
+        : styles.day + " " + styles.Wed}
       >
         Ср
       </button>
       <button
         onClick={handleThursday}
-        className={styles.day + " " + styles.Thu}
+        className={
+        dayOfTheWeek === "thursday"  
+        ? styles.day + " " + styles.Thu + " " + styles.active  
+        : styles.day + " " + styles.Thu}
       >
         Чт
       </button>
-      <button onClick={handleFriday} className={styles.day + " " + styles.Fri}>
+      <button onClick={handleFriday} className={
+        dayOfTheWeek === "friday"
+        ? styles.day + " " + styles.Fri + " " + styles.active
+        : styles.day + " " + styles.Fri}>
         Пт
       </button>
       <button
         onClick={handleSaturday}
-        className={styles.day + " " + styles.Sat}
+        className={
+        dayOfTheWeek === "saturday"  
+        ? styles.day + " " + styles.Sat + " " + styles.active  
+        : styles.day + " " + styles.Sat}
       >
         Сб
       </button>

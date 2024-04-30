@@ -18,10 +18,20 @@ const Fraction = (props) => {
 
   return (
     <>
-      <button onClick={handleNumeratorChange} className={styles.numerator}>
+      <button
+        onClick={handleNumeratorChange}
+        className={
+          fractionState === "numerator"
+            ? styles.numerator + " " + styles.active
+            : styles.numerator
+        }
+      >
         ЧИСЛИТЕЛЬ
       </button>
-      <button onClick={handleDenominatorChange} className={styles.denominator}>
+      <button onClick={handleDenominatorChange} className={
+        fractionState === "denominator" 
+        ? styles.denominator + " " + styles.active 
+        : styles.denominator}>
         ЗНАМЕНАТЕЛЬ
       </button>
     </>

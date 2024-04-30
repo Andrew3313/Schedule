@@ -4,10 +4,10 @@ import Group from "./Group/Group";
 import Fraction from "./Fraction/Fraction";
 import Days from "./Days/Days";
 import Schedule from "./Schedule/Schedule";
-import styles from "./Navbar.module.sass";
+import styles from "./MainSection.module.sass";
 import React, { useState, useEffect } from "react";
 
-const Navbar = (props) => {
+const MainSection = (props) => {
   const [dataByGroup, setDataByGroup] = useState([]);
   const [facultyState, setFacultyState] = useState("фвт");
   const [courseState, setCourseState] = useState(1);
@@ -55,4 +55,4 @@ const Navbar = (props) => {
   );
 };
 
-export default Navbar;
+export default MainSection;
