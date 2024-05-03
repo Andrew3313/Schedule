@@ -1,11 +1,11 @@
 import styles from "./Days.module.sass";
 import React, { useState, useEffect } from "react";
 
-const Days = (props) => {
+const Days = ({ setDay }) => {
   const [dayOfTheWeek, setDayOfTheWeek] = useState("monday");
 
   useEffect(() => {
-    props.setDay(dayOfTheWeek);
+    setDay(dayOfTheWeek);
   }, [dayOfTheWeek]);
 
   const handleDayClick = (day) => {

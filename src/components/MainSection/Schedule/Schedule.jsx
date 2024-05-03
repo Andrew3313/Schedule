@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 
 const Schedule = (props) => {
   const [schedule, setSchedule] = useState([]);
+  const [allSchedule, setAllSchedule] = useState();
 
   useEffect(() => {
     if (props.activeGroup) {
@@ -17,13 +18,18 @@ const Schedule = (props) => {
           }
         })
         .then((data) => {
-          setSchedule(data.schedule[props.fraction][props.day]);
+          setAllSchedule(data);
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [props]);
+  }, [props.activeGroup]);
+
+  useEffect(() => {
+    if (allSchedule)
+      setSchedule(allSchedule.schedule[props.fraction][props.day]);
+  }, [allSchedule, props]);
 
   return (
     <div className={styles.schedule}>
