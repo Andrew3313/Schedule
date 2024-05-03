@@ -1,37 +1,37 @@
 import styles from "./Fraction.module.sass";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const Fraction = (props) => {
   const [fractionState, setFractionState] = useState("numerator");
 
   useEffect(() => {
     props.setFraction(fractionState);
-  }, [fractionState]);
+  }, [fractionState, props.setFraction]);
 
-  const handleNumeratorChange = () => {
+  const handleNumeratorChange = useCallback(() => {
     setFractionState("numerator");
-  };
+  }, []);
 
-  const handleDenominatorChange = () => {
+  const handleDenominatorChange = useCallback(() => {
     setFractionState("denominator");
-  };
+  }, []);
+
+  const getNumeratorClassName = () =>
+    fractionState === "numerator"
+      ? `${styles.numerator} ${styles.active}`
+      : styles.numerator;
+
+  const getDenominatorClassName = () =>
+    fractionState === "denominator"
+      ? `${styles.denominator} ${styles.active}`
+      : styles.denominator;
 
   return (
     <>
-      <button
-        onClick={handleNumeratorChange}
-        className={
-          fractionState === "numerator"
-            ? styles.numerator + " " + styles.active
-            : styles.numerator
-        }
-      >
+      <button onClick={handleNumeratorChange} className={getNumeratorClassName()}>
         ЧИСЛИТЕЛЬ
       </button>
-      <button onClick={handleDenominatorChange} className={
-        fractionState === "denominator" 
-        ? styles.denominator + " " + styles.active 
-        : styles.denominator}>
+      <button onClick={handleDenominatorChange} className={getDenominatorClassName()}>
         ЗНАМЕНАТЕЛЬ
       </button>
     </>
@@ -39,3 +39,4 @@ const Fraction = (props) => {
 };
 
 export default Fraction;
+

@@ -5,7 +5,7 @@ import Fraction from "./Fraction/Fraction";
 import Days from "./Days/Days";
 import Schedule from "./Schedule/Schedule";
 import styles from "./MainSection.module.sass";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 const MainSection = (props) => {
   const [dataByGroup, setDataByGroup] = useState([]);
@@ -15,24 +15,50 @@ const MainSection = (props) => {
   const [fraction, setFraction] = useState();
   const [day, setDay] = useState();
 
-  useEffect(() => {
-    fetch(
-      `http://176.119.159.182:8081/api/v1/schedule/groups?faculty=${facultyState.toLowerCase()}&course=${courseState}`
-    )
-      .then((response) => {
+  const fetchUrl = `http://176.119.159.182:8081/api/v1/schedule/groups?faculty=${facultyState.toLowerCase()}&course=${courseState}`
+
+  const cachedData = useMemo(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(fetchUrl)
         if (response.ok) {
-          return response.json();
+          const data = await response.json();
+          return data.groups;
         } else {
           throw new Error(response.status);
         }
-      })
-      .then((data) => {
-        setDataByGroup(data.groups);
-      })
-      .catch((err) => {
+      } catch (error) {
         console.log(err);
-      });
-  }, [facultyState, courseState]);
+        return [];
+      }
+    }
+
+    return fetchData();
+  }, [fetchUrl])
+
+  useEffect(() => {
+    cachedData.then((data) => setDataByGroup(data));
+  }, [cachedData]);
+
+  // useEffect(() => {
+  //   console.log('render');
+  //   fetch(
+  //     `http://176.119.159.182:8081/api/v1/schedule/groups?faculty=${facultyState.toLowerCase()}&course=${courseState}`
+  //   )
+  //     .then((response) => {
+  //       if (response.ok) {
+  //         return response.json();
+  //       } else {
+  //         throw new Error(response.status);
+  //       }
+  //     })
+  //     .then((data) => {
+  //       setDataByGroup(data.groups);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, [facultyState, courseState]);
 
   useEffect(() => {
     if (dataByGroup && dataByGroup.length > 0) {
