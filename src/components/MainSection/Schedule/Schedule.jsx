@@ -8,7 +8,7 @@ const Schedule = (props) => {
   useEffect(() => {
     if (props.activeGroup) {
       fetch(
-        `http://176.119.159.182:8081/api/v1/schedule/groups/${props.activeGroup}`
+        `https://api.schedule.vingp.dev/api/v1/schedule/groups/${props.activeGroup}`
       )
         .then((response) => {
           if (response.ok) {

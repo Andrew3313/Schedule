@@ -17,7 +17,7 @@ const MainSection = (props) => {
   const isFirstRender = useRef(true);
 
   useEffect(() => {
-    const fetchUrl = `http://176.119.159.182:8081/api/v1/schedule/groups?faculty=${facultyState.toLowerCase()}&course=${courseState}`;
+    const fetchUrl = `https://api.schedule.vingp.dev/api/v1/schedule/groups?faculty=${facultyState.toLowerCase()}&course=${courseState}`;
 
     const fetchData = async () => {
       try {
