@@ -12,6 +12,6 @@ textarea {
     font-family: inherit;
   }
 
-#root {
-  background: var(--tg-theme-bg-color)
+body {
+  background: #17212b
 }
