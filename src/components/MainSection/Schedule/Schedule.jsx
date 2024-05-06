@@ -1,9 +1,11 @@
 import styles from "./Schedule.module.sass";
 import React, { useState, useEffect } from "react";
+import Skeleton from "react-loading-skeleton";
 
 const Schedule = (props) => {
   const [schedule, setSchedule] = useState([]);
   const [allSchedule, setAllSchedule] = useState();
+  const [loadingSchedule, setLoadingSchedule] = useState(true);
 
   useEffect(() => {
     if (props.activeGroup) {
@@ -19,6 +21,7 @@ const Schedule = (props) => {
         })
         .then((data) => {
           setAllSchedule(data);
+          setLoadingSchedule(false);
         })
         .catch((err) => {
           console.log(err);
@@ -32,20 +35,37 @@ const Schedule = (props) => {
   }, [allSchedule, props]);
 
   return (
-    <div className={styles.schedule}>
-      {schedule.length > 0 ? (
-        schedule.map((pair, index) => (
-          <div className={styles.scheduleItem} key={index}>
-            <p className={styles.schedule__time}>{pair.time}</p>
-            <p className={styles.schedule__lesson}>{pair.lesson}</p>
-          </div>
-        ))
-      ) : (
-        <div className={styles.noSchedule}>
-          <h2>В этот день нет занятий</h2>
-        </div>
+    <>
+      {loadingSchedule && (
+        <p className={styles.loaderWrapper}>
+          <Skeleton
+            height={100}
+            count={1}
+            highlightColor
+            className={styles.loader}
+          />
+        </p>
       )}
-    </div>
+      <div
+        className={styles.schedule}
+        style={{
+          display: loadingSchedule ? "none" : "grid",
+        }}
+      >
+        {schedule.length > 0 ? (
+          schedule.map((pair, index) => (
+            <div className={styles.scheduleItem} key={index}>
+              <p className={styles.schedule__time}>{pair.time}</p>
+              <p className={styles.schedule__lesson}>{pair.lesson}</p>
+            </div>
+          ))
+        ) : (
+          <div className={styles.noSchedule}>
+            <h2>В этот день нет занятий</h2>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
