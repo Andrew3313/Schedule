@@ -13,5 +13,5 @@ textarea {
   }
 
 #root {
-  background: rgb(218, 227, 201)
+  background: var(--tg-theme-bg-color)
 }
