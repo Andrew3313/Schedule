@@ -1,6 +1,7 @@
 import styles from "./Schedule.module.sass";
 import React, { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
+import axios from "axios";
 
 const Schedule = (props) => {
   const [schedule, setSchedule] = useState([]);
@@ -9,18 +10,12 @@ const Schedule = (props) => {
 
   useEffect(() => {
     if (props.activeGroup) {
-      fetch(
-        `https://api.schedule.vingp.dev/api/v1/schedule/groups/${props.activeGroup}`
-      )
+      axios
+        .get(
+          `https://api.schedule.vingp.dev/api/v1/schedule/groups/${props.activeGroup}`
+        )
         .then((response) => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error(response.status);
-          }
-        })
-        .then((data) => {
-          setAllSchedule(data);
+          setAllSchedule(response.data);
           setLoadingSchedule(false);
         })
         .catch((err) => {

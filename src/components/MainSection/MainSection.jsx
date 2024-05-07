@@ -1,6 +1,7 @@
 import styles from "./MainSection.module.sass";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import Skeleton from "react-loading-skeleton";
+import axios from "axios";
 
 import Course from "./Course/Course";
 import Department from "./Department/Department";
@@ -16,7 +17,6 @@ const MainSection = (props) => {
   const [activeGroup, setActiveGroup] = useState();
   const [fraction, setFraction] = useState();
   const [day, setDay] = useState();
-  const isFirstRender = useRef(true);
   const [loading, setLoading] = useState(true);
 
   const fetchData = useCallback(() => {
@@ -24,24 +24,14 @@ const MainSection = (props) => {
 
     const fetchData = async () => {
       try {
-        const response = await fetch(fetchUrl);
-        if (response.ok) {
-          const data = await response.json();
-          setDataByGroup(data.groups);
-          setLoading(false);
-        } else {
-          throw new Error(response.status);
-        }
+        const response = await axios.get(fetchUrl);
+        setDataByGroup(response.data.groups);
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
-
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    } else {
-      fetchData();
-    }
+    fetchData();
   }, [facultyState, courseState]);
 
   useEffect(() => {
