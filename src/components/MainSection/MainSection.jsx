@@ -48,10 +48,6 @@ const MainSection = (props) => {
     fetchData();
   }, [facultyState, courseState]);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, []);
-
   useEffect(() => {
     if (dataByGroup && dataByGroup.length > 0) {
       setActiveGroup(dataByGroup[0]);
@@ -62,7 +58,7 @@ const MainSection = (props) => {
     <>
       {loading && (
         <p className={styles.loaderWrapper}>
-          <Skeleton height={100} count={1} highlightColor className={styles.loader} />
+          <Skeleton height={100} count={1} className={styles.loader} />
         </p>
       )}
 

@@ -41,7 +41,6 @@ const Schedule = (props) => {
           <Skeleton
             height={100}
             count={1}
-            highlightColor
             className={styles.loader}
           />
         </p>
