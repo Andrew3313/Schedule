@@ -20,8 +20,14 @@ const MainSection = (props) => {
   const [fraction, setFraction] = useState();
   const [day, setDay] = useState();
   const [loading, setLoading] = useState(true);
+  const [currentDay, setCurrentDay] = useState("");
+  const [currentFraction, setCurrentFraction] = useState("");
 
-  const fetchUrl = `https://api.schedule.vingp.dev/api/v1/schedule/groups?faculty=${facultyState?.toLowerCase() || ''}&course=${courseState}`;
+  const todayUrl = "https://api.schedule.vingp.dev/api/v1/schedule/day";
+
+  const fetchUrl = `https://api.schedule.vingp.dev/api/v1/schedule/groups?faculty=${
+    facultyState?.toLowerCase() || ""
+  }&course=${courseState}`;
 
   const cachedData = useMemo(() => {
     const cached = localStorage.getItem(fetchUrl);
@@ -63,6 +69,16 @@ const MainSection = (props) => {
     }
   }, [courseState, cachedData, fetchUrl, getItem]);
 
+  const getToday = useCallback(async () => {
+    try {
+      const today = await axios.get(todayUrl);
+      setCurrentFraction(today.data.week_type);
+      setCurrentDay(today.data.day.toLowerCase());
+    } catch (error) {
+      console.log(error);
+    }
+  }, [todayUrl]);
+
   useEffect(() => {
     if (facultyState && courseState) {
       fetchData();
@@ -79,6 +95,10 @@ const MainSection = (props) => {
       setItem("group", activeGroup);
     }
   }, [activeGroup, setItem]);
+
+  useEffect(() => {
+    getToday();
+  }, [getToday]);
 
   return (
     <>
@@ -104,8 +124,8 @@ const MainSection = (props) => {
           activeGroup={activeGroup}
           setActiveGroup={setActiveGroup}
         />
-        <Fraction setFraction={setFraction} />
-        <Days setDay={setDay} />
+        <Fraction setFraction={setFraction} currentFraction={currentFraction} />
+        <Days setDay={setDay} currentDay={currentDay} />
         <Schedule activeGroup={activeGroup} fraction={fraction} day={day} />
       </div>
     </>

@@ -2,11 +2,19 @@ import styles from "./Fraction.module.sass";
 import React, { useState, useEffect, useCallback } from "react";
 
 const Fraction = (props) => {
-  const [fractionState, setFractionState] = useState("numerator");
+  const [fractionState, setFractionState] = useState("");
 
   useEffect(() => {
     props.setFraction(fractionState);
   }, [fractionState, props.setFraction]);
+
+  useEffect(() => {
+    if (props.currentFraction === "числитель") {
+      setFractionState("numerator");
+    } else {
+      setFractionState("denominator");
+    }
+  }, [props.currentFraction]);
 
   const handleNumeratorChange = useCallback(() => {
     setFractionState("numerator");
@@ -28,10 +36,16 @@ const Fraction = (props) => {
 
   return (
     <>
-      <button onClick={handleNumeratorChange} className={getNumeratorClassName()}>
+      <button
+        onClick={handleNumeratorChange}
+        className={getNumeratorClassName()}
+      >
         ЧИСЛИТЕЛЬ
       </button>
-      <button onClick={handleDenominatorChange} className={getDenominatorClassName()}>
+      <button
+        onClick={handleDenominatorChange}
+        className={getDenominatorClassName()}
+      >
         ЗНАМЕНАТЕЛЬ
       </button>
     </>
@@ -39,4 +53,3 @@ const Fraction = (props) => {
 };
 
 export default Fraction;
-

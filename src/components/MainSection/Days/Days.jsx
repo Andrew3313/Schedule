@@ -1,8 +1,12 @@
 import styles from "./Days.module.sass";
 import React, { useState, useEffect } from "react";
 
-const Days = ({ setDay }) => {
-  const [dayOfTheWeek, setDayOfTheWeek] = useState("monday");
+const Days = ({ setDay, currentDay }) => {
+  const [dayOfTheWeek, setDayOfTheWeek] = useState("");
+
+  useEffect(() => {
+    setDayOfTheWeek(currentDay === "sunday" ? "monday" : currentDay);
+  }, [currentDay]);
 
   useEffect(() => {
     setDay(dayOfTheWeek);
