@@ -1,11 +1,14 @@
+import { useLocalStorage } from "../../hooks/useLocalStorage";
 import styles from "./Group.module.sass";
 import React, { useState, useEffect } from "react";
 
 const Group = (props) => {
   const [selectedGroup, setSelectedGroup] = useState();
+  const [_, setItem] = useLocalStorage();
 
   const handleGroupChange = ({ target: { value } }) => {
     setSelectedGroup(value);
+    setItem("group", value);
   };
 
   useEffect(() => {
@@ -13,6 +16,10 @@ const Group = (props) => {
       props.setActiveGroup(selectedGroup);
     }
   }, [selectedGroup]);
+
+  useEffect(() => {
+    setSelectedGroup(props.activeGroup);
+  }, [props.activeGroup]);
 
   return (
     <select
