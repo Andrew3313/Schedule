@@ -33,11 +33,7 @@ const Schedule = (props) => {
     <>
       {loadingSchedule && (
         <p className={styles.loaderWrapper}>
-          <Skeleton
-            height={100}
-            count={1}
-            className={styles.loader}
-          />
+          <Skeleton height={100} count={1} className={styles.loader} />
         </p>
       )}
       <div
@@ -46,7 +42,7 @@ const Schedule = (props) => {
           display: loadingSchedule ? "none" : "grid",
         }}
       >
-        {(schedule && schedule.length > 0) ? (
+        {schedule && schedule.length > 0 ? (
           schedule.map((pair, index) => (
             <div className={styles.scheduleItem} key={index}>
               <p className={styles.schedule__time}>{pair.time}</p>

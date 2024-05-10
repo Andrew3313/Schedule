@@ -1,6 +1,5 @@
 import styles from "./MainSection.module.sass";
 import React, { useState, useEffect, useMemo, useCallback } from "react";
-import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 
 import Course from "./Course/Course";
@@ -101,7 +100,12 @@ const MainSection = (props) => {
   }, [getToday]);
 
   return (
-    <main className={styles.nav}>
+    <main
+      className={styles.nav}
+      style={{
+        display: loading ? "none" : "grid",
+      }}
+    >
       <Course courseState={courseState} setCourseState={setCourseState} />
       <Department
         facultyState={facultyState}
