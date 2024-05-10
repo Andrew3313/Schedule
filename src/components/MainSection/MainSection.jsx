@@ -101,34 +101,22 @@ const MainSection = (props) => {
   }, [getToday]);
 
   return (
-    <>
-      {loading && (
-        <p className={styles.loaderWrapper}>
-          <Skeleton height={100} count={1} className={styles.loader} />
-        </p>
-      )}
+    <main className={styles.nav}>
+      <Course courseState={courseState} setCourseState={setCourseState} />
+      <Department
+        facultyState={facultyState}
+        setFacultyState={setFacultyState}
+      />
+      <Group
+        dataByGroup={dataByGroup}
+        activeGroup={activeGroup}
+        setActiveGroup={setActiveGroup}
+      />
+      <Fraction setFraction={setFraction} currentFraction={currentFraction} />
 
-      <main
-        className={styles.nav}
-        style={{
-          display: loading ? "none" : "grid",
-        }}
-      >
-        <Course courseState={courseState} setCourseState={setCourseState} />
-        <Department
-          facultyState={facultyState}
-          setFacultyState={setFacultyState}
-        />
-        <Group
-          dataByGroup={dataByGroup}
-          activeGroup={activeGroup}
-          setActiveGroup={setActiveGroup}
-        />
-        <Fraction setFraction={setFraction} currentFraction={currentFraction} />
-        <Days setDay={setDay} currentDay={currentDay} />
-        <Schedule activeGroup={activeGroup} fraction={fraction} day={day} />
-      </main>
-    </>
+      <Days setDay={setDay} currentDay={currentDay} />
+      <Schedule activeGroup={activeGroup} fraction={fraction} day={day} />
+    </main>
   );
 };
 

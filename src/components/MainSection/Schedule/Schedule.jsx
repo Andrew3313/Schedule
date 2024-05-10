@@ -46,7 +46,7 @@ const Schedule = (props) => {
           display: loadingSchedule ? "none" : "grid",
         }}
       >
-        {schedule.length > 0 ? (
+        {(schedule && schedule.length > 0) ? (
           schedule.map((pair, index) => (
             <div className={styles.scheduleItem} key={index}>
               <p className={styles.schedule__time}>{pair.time}</p>
