@@ -108,7 +108,7 @@ const MainSection = (props) => {
         </p>
       )}
 
-      <div
+      <main
         className={styles.nav}
         style={{
           display: loading ? "none" : "grid",
@@ -127,7 +127,7 @@ const MainSection = (props) => {
         <Fraction setFraction={setFraction} currentFraction={currentFraction} />
         <Days setDay={setDay} currentDay={currentDay} />
         <Schedule activeGroup={activeGroup} fraction={fraction} day={day} />
-      </div>
+      </main>
     </>
   );
 };
