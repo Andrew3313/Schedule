@@ -100,12 +100,7 @@ const MainSection = (props) => {
   }, [getToday]);
 
   return (
-    <main
-      className={styles.nav}
-      style={{
-        display: loading ? "none" : "grid",
-      }}
-    >
+    <main className={styles.nav}>
       <Course courseState={courseState} setCourseState={setCourseState} />
       <Department
         facultyState={facultyState}
