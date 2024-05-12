@@ -5,7 +5,7 @@ const Days = ({ setDay, currentDay }) => {
   const [dayOfTheWeek, setDayOfTheWeek] = useState("");
 
   useEffect(() => {
-    setDayOfTheWeek(currentDay === "sunday" ? "monday" : currentDay);
+    setDayOfTheWeek(currentDay);
   }, [currentDay]);
 
   useEffect(() => {

@@ -1,20 +1,20 @@
 import styles from "./Fraction.module.sass";
 import React, { useState, useEffect, useCallback } from "react";
 
-const Fraction = (props) => {
+const Fraction = ({ setFraction, currentFraction, currentDay }) => {
   const [fractionState, setFractionState] = useState("");
 
   useEffect(() => {
-    props.setFraction(fractionState);
-  }, [fractionState, props.setFraction]);
+    setFraction(fractionState);
+  }, [fractionState, setFraction]);
 
   useEffect(() => {
-    if (props.currentFraction === "числитель") {
+    if (currentFraction === "числитель") {
       setFractionState("numerator");
     } else {
       setFractionState("denominator");
     }
-  }, [props.currentFraction]);
+  }, [currentFraction]);
 
   const handleNumeratorChange = useCallback(() => {
     setFractionState("numerator");
