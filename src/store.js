@@ -13,7 +13,7 @@ const persistOptions = {
 
 export const useStore = create(
   persist(
-    devtools((set, get) => ({
+    devtools((set) => ({
       courseState: 1,
       facultyState: "фвт",
       activeGroup: null, 

@@ -94,6 +94,7 @@ const MainSection = () => {
           <Skeleton height={100} count={1} className={styles.loader} />
         </p>
       )}
+      <div className={styles.navWrapper}>
       <main
         className={styles.nav}
         style={{
@@ -107,6 +108,7 @@ const MainSection = () => {
         <Days />
         <Schedule />
       </main>
+      </div>
     </>
   );
 };
