@@ -1,27 +1,14 @@
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import styles from "./Department.module.sass";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useStore } from "../../../store.js";
 
 const Department = (props) => {
-  const [selectedDepartment, setSelectedDepartment] = useState();
-
-  const [getItem, setItem] = useLocalStorage();
+  const selectedDepartment = useStore((state) => state.facultyState);
+  const setSelectedDepartment = useStore((state) => state.setFacultyState);
 
   const handleDepartmentChange = ({ target: { value } }) => {
     setSelectedDepartment(value);
-    setItem("department", value);
   };
-
-  useEffect(() => {
-    const department = getItem("department");
-    department
-      ? setSelectedDepartment(department)
-      : setSelectedDepartment("фвт");
-  }, []);
-
-  useEffect(() => {
-    props.setFacultyState(selectedDepartment);
-  }, [selectedDepartment]);
 
   return (
     <select

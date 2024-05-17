@@ -1,26 +1,18 @@
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import styles from "./Course.module.sass";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useStore } from "../../../store.js";
 
 const Course = (props) => {
-  const [course, setCourse] = useState();
-
-  const [getItem, setItem] = useLocalStorage();
+  const course = useStore((state) => state.courseState);
+  const setCourse = useStore((state) => state.setCourseState);
 
   const handleCourseChange = () => {
-    const newCourse = course !== 4 ? course + 1 : 1;
-    setCourse(newCourse);
-    setItem("course", newCourse);
+    if (course !== 4) {
+      setCourse(course + 1);
+    } else {
+      setCourse(1);
+    }
   };
-
-  useEffect(() => {
-    const course = getItem("course");
-    course ? setCourse(course) : setCourse(1);
-  }, []);
-
-  useEffect(() => {
-    props.setCourseState(course);
-  }, [course]);
 
   return (
     <button onClick={handleCourseChange} className={styles.course}>

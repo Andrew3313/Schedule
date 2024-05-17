@@ -1,28 +1,18 @@
 import styles from "./Fraction.module.sass";
-import React, { useState, useEffect, useCallback } from "react";
+import React from "react";
+import { useStore } from "../../../store.js";
 
-const Fraction = ({ setFraction, currentFraction, currentDay }) => {
-  const [fractionState, setFractionState] = useState("");
+const Fraction = () => {
+  const fractionState = useStore((state) => state.currentFraction);
+  const setFractionState = useStore((state) => state.setCurrentFraction);
 
-  useEffect(() => {
-    setFraction(fractionState);
-  }, [fractionState, setFraction]);
-
-  useEffect(() => {
-    if (currentFraction === "числитель") {
-      setFractionState("numerator");
-    } else {
-      setFractionState("denominator");
-    }
-  }, [currentFraction]);
-
-  const handleNumeratorChange = useCallback(() => {
+  const handleNumeratorChange = () => {
     setFractionState("numerator");
-  }, []);
+  };
 
-  const handleDenominatorChange = useCallback(() => {
+  const handleDenominatorChange = () => {
     setFractionState("denominator");
-  }, []);
+  };
 
   const getNumeratorClassName = () =>
     fractionState === "numerator"

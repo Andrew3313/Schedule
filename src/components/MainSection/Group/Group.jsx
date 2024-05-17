@@ -1,25 +1,15 @@
-import { useLocalStorage } from "../../hooks/useLocalStorage";
 import styles from "./Group.module.sass";
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { useStore } from "../../../store.js";
 
 const Group = (props) => {
-  const [selectedGroup, setSelectedGroup] = useState();
-  const [_, setItem] = useLocalStorage();
+  const selectedGroup = useStore((state) => state.activeGroup);
+  const setSelectedGroup = useStore((state) => state.setActiveGroup);
+  const data = useStore((state) => state.dataByGroup);
 
   const handleGroupChange = ({ target: { value } }) => {
     setSelectedGroup(value);
-    setItem("group", value);
   };
-
-  useEffect(() => {
-    if (props.dataByGroup && props.dataByGroup.length > 0) {
-      props.setActiveGroup(selectedGroup);
-    }
-  }, [selectedGroup]);
-
-  useEffect(() => {
-    setSelectedGroup(props.activeGroup);
-  }, [props.activeGroup]);
 
   return (
     <select
@@ -30,12 +20,9 @@ const Group = (props) => {
       <option disabled value="" className={styles.group__item}>
         ГРУППА
       </option>
-      {props.dataByGroup &&
-        props.dataByGroup.map((group) => (
-          <option
-            className={styles.group__item}
-            key={props.dataByGroup.indexOf(group)}
-          >
+      {data &&
+        data.map((group) => (
+          <option className={styles.group__item} key={data.indexOf(group)}>
             {group}
           </option>
         ))}

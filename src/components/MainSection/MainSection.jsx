@@ -1,6 +1,6 @@
 import styles from "./MainSection.module.sass";
-import React, { useState, useEffect, useMemo, useCallback } from "react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import React, { useEffect, useCallback, useRef } from "react";
+import { useStore } from "../../store.js";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 
@@ -12,107 +12,80 @@ import Days from "./Days/Days";
 import Schedule from "./Schedule/Schedule";
 
 const MainSection = (props) => {
-  const [getItem, setItem] = useLocalStorage();
-  const [dataByGroup, setDataByGroup] = useState([]);
-  const [facultyState, setFacultyState] = useState(getItem("faculty") || "фвт");
-  const [courseState, setCourseState] = useState(getItem("course") || 1);
-  const [activeGroup, setActiveGroup] = useState();
-  const [fraction, setFraction] = useState();
-  const [day, setDay] = useState();
-  const [loading, setLoading] = useState(true);
-  const [currentDay, setCurrentDay] = useState("");
-  const [currentFraction, setCurrentFraction] = useState("");
+  const course = useStore((state) => state.courseState);
+  const faculty = useStore((state) => state.facultyState);
+  const activeGroup = useStore((state) => state.activeGroup);
+  const setDataByGroup = useStore((state) => state.setDataByGroup);
+  const setActiveGroup = useStore((state) => state.setActiveGroup);
+  const setCurrentFraction = useStore((state) => state.setCurrentFraction);
+  const setCurrentDay = useStore((state) => state.setCurrentDay);
+  const loading = useStore((state) => state.loadingNav);
+  const setLoadingNav = useStore((state) => state.setLoadingNav);
 
-  const todayUrl = "https://api.schedule.vingp.dev/api/v1/schedule/day";
-
-  const fetchUrl = `https://api.schedule.vingp.dev/api/v1/schedule/groups?faculty=${
-    facultyState?.toLowerCase() || ""
-  }&course=${courseState}`;
-
-  const cachedData = useMemo(() => {
-    const cached = localStorage.getItem(fetchUrl);
-    if (cached) {
-      return JSON.parse(cached);
-    }
-    return null;
-  }, [fetchUrl]);
+  const firstRender = useRef(true);
 
   const fetchData = useCallback(async () => {
-    if (!courseState) return;
-
-    if (cachedData) {
-      setDataByGroup(cachedData.groups);
-      const group = getItem("group");
-      if (cachedData.groups.includes(group)) {
-        setActiveGroup(group);
-      } else if (cachedData.groups.length > 0) {
-        setActiveGroup(cachedData.groups[0]);
-      }
-    } else {
-      try {
-        const response = await axios.get(fetchUrl);
-        localStorage.setItem(fetchUrl, JSON.stringify(response.data));
-        setDataByGroup(response.data.groups);
-
-        const group = getItem("group");
-        if (response.data.groups.includes(group)) {
-          setActiveGroup(group);
-        } else if (response.data.groups.length > 0) {
-          setActiveGroup(response.data.groups[0]);
+    const fetchUrl = `https://api.schedule.vingp.dev/api/v1/schedule/groups?faculty=${
+      faculty?.toLowerCase() || ""
+    }&course=${course}`;
+    try {
+      const response = await axios.get(fetchUrl);
+      const groups = response.data.groups;
+      if (groups.length > 0) {
+        setDataByGroup(groups);
+        if (firstRender.current && !activeGroup) {
+          setActiveGroup(groups[0]);
+        } else if (activeGroup && !groups.includes(activeGroup)) {
+          setActiveGroup(groups[0]);
         }
-      } catch (error) {
-        console.log(error);
+      } else {
+        setDataByGroup([]);
+        setActiveGroup(null);
       }
+      setLoadingNav();
+    } catch (error) {
+      console.log(error);
+      setDataByGroup([]);
+      setActiveGroup(null);
     }
-  }, [courseState, cachedData, fetchUrl, getItem]);
+    firstRender.current = false;
+  }, [course, faculty]);
 
   const getToday = useCallback(async () => {
+    const todayUrl = "https://api.schedule.vingp.dev/api/v1/schedule/day";
     try {
       const today = await axios.get(todayUrl);
       if (
         today.data.day.toLowerCase() === "sunday" &&
         today.data.week_type === "числитель"
       ) {
-        setCurrentFraction("знаменатель");
+        setCurrentFraction("denominator");
         setCurrentDay("monday");
-        setLoading(false);
       } else if (
         today.data.day.toLowerCase() === "sunday" &&
         today.data.week_type === "знаменатель"
       ) {
-        setCurrentFraction("числитель");
+        setCurrentFraction("numerator");
         setCurrentDay("monday");
-        setLoading(false);
-      } else {
-        setCurrentFraction(today.data.week_type);
+      } else if (today.data.week_type === "числитель") {
+        setCurrentFraction("numerator");
         setCurrentDay(today.data.day.toLowerCase());
-        setLoading(false);
+      } else {
+        setCurrentFraction("denominator");
+        setCurrentDay(today.data.day.toLowerCase());
       }
     } catch (error) {
       console.log(error);
     }
-  }, [todayUrl]);
-
-  useEffect(() => {
-    if (facultyState && courseState) {
-      fetchData();
-    }
-  }, [facultyState, courseState, fetchData]);
-
-  useEffect(() => {
-    setItem("faculty", facultyState);
-    setItem("course", courseState);
-  }, [facultyState, courseState, setItem]);
-
-  useEffect(() => {
-    if (activeGroup) {
-      setItem("group", activeGroup);
-    }
-  }, [activeGroup, setItem]);
+  }, []);
 
   useEffect(() => {
     getToday();
-  }, [getToday]);
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData, course, faculty]);
 
   return (
     <>
@@ -127,20 +100,12 @@ const MainSection = (props) => {
           display: loading ? "none" : "grid",
         }}
       >
-        <Course courseState={courseState} setCourseState={setCourseState} />
-        <Department
-          facultyState={facultyState}
-          setFacultyState={setFacultyState}
-        />
-        <Group
-          dataByGroup={dataByGroup}
-          activeGroup={activeGroup}
-          setActiveGroup={setActiveGroup}
-        />
-        <Fraction setFraction={setFraction} currentFraction={currentFraction} />
-
-        <Days setDay={setDay} currentDay={currentDay} />
-        <Schedule activeGroup={activeGroup} fraction={fraction} day={day} />
+        <Course />
+        <Department />
+        <Group />
+        <Fraction />
+        <Days />
+        <Schedule />
       </main>
     </>
   );

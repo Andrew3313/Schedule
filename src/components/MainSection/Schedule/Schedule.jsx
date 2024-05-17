@@ -2,36 +2,47 @@ import styles from "./Schedule.module.sass";
 import React, { useState, useEffect } from "react";
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
+import { useStore } from "../../../store.js";
 
 const Schedule = (props) => {
+  const group = useStore((state) => state.activeGroup);
+  const day = useStore((state) => state.currentDay);
+  const fraction = useStore((state) => state.currentFraction);
+  const loading = useStore((state) => state.loadingSchedule);
+  const setLoading = useStore((state) => state.setLoadingSchedule);
   const [schedule, setSchedule] = useState([]);
-  const [allSchedule, setAllSchedule] = useState();
-  const [loadingSchedule, setLoadingSchedule] = useState(true);
+  const [allSchedule, setAllSchedule] = useState({});
 
   useEffect(() => {
-    if (props.activeGroup) {
+    if (group) {
       axios
-        .get(
-          `https://api.schedule.vingp.dev/api/v1/schedule/groups/${props.activeGroup}`
-        )
+        .get(`https://api.schedule.vingp.dev/api/v1/schedule/groups/${group}`)
         .then((response) => {
           setAllSchedule(response.data);
-          setLoadingSchedule(false);
+          setLoading();
         })
         .catch((err) => {
           console.log(err);
         });
     }
-  }, [props.activeGroup]);
+  }, [group]);
 
   useEffect(() => {
-    if (allSchedule)
-      setSchedule(allSchedule.schedule[props.fraction][props.day]);
-  }, [allSchedule, props]);
+    if (
+      allSchedule &&
+      allSchedule.schedule &&
+      allSchedule.schedule[fraction] &&
+      allSchedule.schedule[fraction][day]
+    ) {
+      setSchedule(allSchedule.schedule[fraction][day]);
+    } else {
+      setSchedule([]);
+    }
+  }, [allSchedule, fraction, day]);
 
   return (
     <>
-      {loadingSchedule && (
+      {loading && (
         <p className={styles.loaderWrapper}>
           <Skeleton height={100} count={1} className={styles.loader} />
         </p>
@@ -39,7 +50,7 @@ const Schedule = (props) => {
       <div
         className={styles.schedule}
         style={{
-          display: loadingSchedule ? "none" : "grid",
+          display: loading ? "none" : "grid",
         }}
       >
         {schedule && schedule.length > 0 ? (

@@ -1,16 +1,10 @@
+import { useStore } from "../../../store.js";
 import styles from "./Days.module.sass";
-import React, { useState, useEffect } from "react";
+import React from "react";
 
-const Days = ({ setDay, currentDay }) => {
-  const [dayOfTheWeek, setDayOfTheWeek] = useState("");
-
-  useEffect(() => {
-    setDayOfTheWeek(currentDay);
-  }, [currentDay]);
-
-  useEffect(() => {
-    setDay(dayOfTheWeek);
-  }, [dayOfTheWeek]);
+const Days = () => {
+  const dayOfTheWeek = useStore((state) => state.currentDay);
+  const setDayOfTheWeek = useStore((state) => state.setCurrentDay);
 
   const handleDayClick = (day) => {
     setDayOfTheWeek(day);
