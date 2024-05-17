@@ -11,7 +11,7 @@ import Fraction from "./Fraction/Fraction";
 import Days from "./Days/Days";
 import Schedule from "./Schedule/Schedule";
 
-const MainSection = (props) => {
+const MainSection = () => {
   const course = useStore((state) => state.courseState);
   const faculty = useStore((state) => state.facultyState);
   const activeGroup = useStore((state) => state.activeGroup);

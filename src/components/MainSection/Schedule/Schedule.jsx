@@ -4,7 +4,7 @@ import Skeleton from "react-loading-skeleton";
 import axios from "axios";
 import { useStore } from "../../../store.js";
 
-const Schedule = (props) => {
+const Schedule = () => {
   const group = useStore((state) => state.activeGroup);
   const day = useStore((state) => state.currentDay);
   const fraction = useStore((state) => state.currentFraction);

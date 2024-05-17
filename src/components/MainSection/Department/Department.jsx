@@ -2,7 +2,7 @@ import styles from "./Department.module.sass";
 import React from "react";
 import { useStore } from "../../../store.js";
 
-const Department = (props) => {
+const Department = () => {
   const selectedDepartment = useStore((state) => state.facultyState);
   const setSelectedDepartment = useStore((state) => state.setFacultyState);
 

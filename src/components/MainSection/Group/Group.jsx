@@ -2,7 +2,7 @@ import styles from "./Group.module.sass";
 import React from "react";
 import { useStore } from "../../../store.js";
 
-const Group = (props) => {
+const Group = () => {
   const selectedGroup = useStore((state) => state.activeGroup);
   const setSelectedGroup = useStore((state) => state.setActiveGroup);
   const data = useStore((state) => state.dataByGroup);

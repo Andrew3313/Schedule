@@ -2,7 +2,7 @@ import styles from "./Course.module.sass";
 import React from "react";
 import { useStore } from "../../../store.js";
 
-const Course = (props) => {
+const Course = () => {
   const course = useStore((state) => state.courseState);
   const setCourse = useStore((state) => state.setCourseState);
 
