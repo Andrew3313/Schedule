@@ -56,7 +56,7 @@ const Schedule = () => {
         {schedule && schedule.length > 0 ? (
           schedule.map((pair, index) => (
             <div className={styles.scheduleItem} key={index}>
-              <p className={styles.schedule__time}>{pair.time}</p>
+              <p className={index === 0 ? `${styles.schedule__time} ${styles.firstPairTime}` : styles.schedule__time}>{pair.time}</p>
               <p className={styles.schedule__lesson}>{pair.lesson}</p>
             </div>
           ))
