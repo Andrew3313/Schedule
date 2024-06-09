@@ -1,15 +1,15 @@
 import styles from "./MainSection.module.sass";
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useStore } from "../../store.js";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 
-import Course from "./Course/Course";
-import Department from "./Department/Department";
-import Group from "./Group/Group";
-import Fraction from "./Fraction/Fraction";
-import Days from "./Days/Days";
-import Schedule from "./Schedule/Schedule";
+import Course from "./Course";
+import Department from "./Department";
+import Group from "./Group";
+import Fraction from "./Fraction";
+import Days from "./Days";
+import Schedule from "./Schedule";
 
 const MainSection = () => {
   const course = useStore((state) => state.courseState);
@@ -21,10 +21,9 @@ const MainSection = () => {
   const setCurrentDay = useStore((state) => state.setCurrentDay);
   const loading = useStore((state) => state.loadingNav);
   const setLoadingNav = useStore((state) => state.setLoadingNav);
-
   const firstRender = useRef(true);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
     const fetchUrl = `https://api.schedule.vingp.dev/api/v1/schedule/groups?faculty=${
       faculty?.toLowerCase() || ""
     }&course=${course}`;
@@ -49,9 +48,9 @@ const MainSection = () => {
       setActiveGroup(null);
     }
     firstRender.current = false;
-  }, [course, faculty]);
+  };
 
-  const getToday = useCallback(async () => {
+  const getToday = async () => {
     const todayUrl = "https://api.schedule.vingp.dev/api/v1/schedule/day";
     try {
       const today = await axios.get(todayUrl);
@@ -77,7 +76,7 @@ const MainSection = () => {
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  };
 
   useEffect(() => {
     getToday();
@@ -85,7 +84,7 @@ const MainSection = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData, course, faculty]);
+  }, [course, faculty]);
 
   return (
     <>
@@ -95,19 +94,19 @@ const MainSection = () => {
         </p>
       )}
       <div className={styles.navWrapper}>
-      <main
-        className={styles.nav}
-        style={{
-          display: loading ? "none" : "grid",
-        }}
-      >
-        <Course />
-        <Department />
-        <Group />
-        <Fraction />
-        <Days />
-        <Schedule />
-      </main>
+        <main
+          className={styles.nav}
+          style={{
+            display: loading ? "none" : "grid",
+          }}
+        >
+          <Course />
+          <Department />
+          <Group />
+          <Fraction />
+          <Days />
+          <Schedule />
+        </main>
       </div>
     </>
   );
